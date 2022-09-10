@@ -12,25 +12,32 @@ import static java.util.stream.Collectors.mapping;
 
 public class ComplexExamples {
 
-    static boolean fuzzySearch(String str1, String str2) {
+    public static boolean fuzzySearch(String str1, String str2) {
+        boolean b = true;
+
         char[] char1 = str1.toCharArray();
         char[] char2 = str2.toCharArray();
-        boolean b = false;
-        OUTER:
-        for (int i = 0; i < str2.length(); i++) {
-            INNER:
-            for (int j = 0; j < str1.length(); j++) {
-                if (char1[i] == char2[j]) {
-                    str2 = str2.substring(i+1);
-                    b = true;
-                    continue OUTER;
-                } else {
-                    b = false;
+        String s2 = "";
+        List <String> list = new ArrayList<>();
+
+        for (int i = 0; i < char2.length; i++) {
+
+            for (int j = 0; j < char1.length; j++) {
+
+                if (char2[i] == char1[j]) {
+
+                    String s = Character.toString(char2[i]);
+
+                    list.add(s);
+
+                    break;
                 }
             }
         }
-        System.out.println(b);
-        System.out.println(str2);
+        for (String sing: list) {
+            s2 += sing;
+        }
+        System.out.println(b = s2.equals(str1));
         return b;
     }
 
@@ -66,6 +73,7 @@ public class ComplexExamples {
             return Objects.hash(getId(), getName());
         }
     }
+
 
 
     private static Person[] RAW_DATA = new Person[]{
@@ -129,32 +137,36 @@ public class ComplexExamples {
 //        System.out.println();
 //        System.out.println("Duplicate filtered, grouped by name, sorted by name and id:");
 //        System.out.println();
-
+        System.out.println("-------------------------------------");
+        System.out.println("Zadanie 1: ");
         List<Person> list = Arrays.asList(RAW_DATA);
         Map<String, Integer> map = list.stream().distinct()
                 .collect(Collectors.toMap(k -> k.getName(), v -> v.getId(), (v1, v2) -> Math.min(v1, v2), TreeMap::new));
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             System.out.println("Key:" + entry.getKey() + "\nValue:" + entry.getValue());
         }
-//
-//        int[] array = {6, 4, 7, 5, 8};
-//
-//        for (int i = 0; i < array.length; i++) {
-//            for (int j = i + 1; j < array.length; j++) {
-//                if (array[i] + array[j] == 10) {
-//                    int[] s = {array[i], array[j]};
-//                    System.out.println(Arrays.toString(s));
-//                }
-//            }
-//        }
+        System.out.println("-------------------------------------");
+        System.out.println("Zadanie2: ");
+        int[] array = {6, 4, 7, 5, 8};
+
+        for (int i = 0; i < array.length; i++) {
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[i] + array[j] == 10) {
+                    int[] s = {array[i], array[j]};
+                    System.out.println(Arrays.toString(s));
+                }
+            }
+        }
+        System.out.println("-------------------------------------");
+        System.out.println("Zadanie3: ");
 
 
-//        fuzzySearch("car", "ca6$$#_rtwheel");
-        fuzzySearch("cwhl", "cartwheel");
-//        fuzzySearch("cwhee", "cartwheel");
-//        fuzzySearch("cwheeel", "cartwheel");
-//        fuzzySearch("bas", "asb");
-//        fuzzySearch("lw", "cartwheel");
+        fuzzySearch("car", "ca6$$#_rtwheel"); // true
+        fuzzySearch("cwhl", "cartwheel"); // true
+        fuzzySearch("cwhee", "cartwheel"); // true
+        fuzzySearch("cartwheel", "cartwheel"); // true
+        fuzzySearch("cwheeel", "cartwheel"); // false
+        fuzzySearch("lw", "cartwheel"); // false
 
     }
 
